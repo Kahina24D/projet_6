@@ -1,5 +1,5 @@
 
-import { displayWorks, initWorks } from "./index.works.js";
+import { displayWorks } from "./index.works.js";
 
 
 import { fetchCategories } from "../libs/categories.js";
@@ -47,9 +47,11 @@ export async function displayCategories() {
 
     tous.addEventListener("click", function () {
         let activeElement = document.querySelector(".active")
+        displayWorks(window.works)
         if (activeElement) {
             activeElement.classList.remove("active")
         }
+
         this.classList.add("active")
 
 

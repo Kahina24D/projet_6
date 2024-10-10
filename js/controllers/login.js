@@ -11,7 +11,7 @@ export function initLogin() {
             let email = $email.value;
             let password = $password.value;
             try {
-                let result = await login(email, password); // Don't forget await if login is async
+                let result = await login(email, password);
 
             } catch (error) {
                 alert("erreur");

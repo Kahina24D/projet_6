@@ -1,78 +1,88 @@
+
+import { fetchCategories } from "../libs/categories.js";
 import { getUsers } from "../libs/users.js";
 import { deleteWork, fetchWorks } from "../libs/works.js";
 
 
-// Fonction pour ouvrir la modale 1
 getUsers()
-const openModal = function (e) {
 
-    document.addEventListener('click', function (event) {
-
-        let target = event.target;
-        let href = target.getAttribute('href');
-        const modal = document.querySelector(href);
-        if (modal) {
-            modal.style.display = 'block';  // Show the modal
-            modal.removeAttribute("aria-hidden");
-            modal.setAttribute("aria-modal", "true");
-
-            modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
+function openModal() {
 
 
+    const modalSectionAdd = document.getElementById("modal-section-add");
+    const modalSectionList = document.getElementById("modal-section-list");
+    const addWorkButton = document.getElementById("add-work");
+    addWorkButton.addEventListener("click", () => {
+        modalSectionList.classList.add("hidden");
+        modalSectionAdd.classList.remove("hidden");
+    });
+    modalSectionList.classList.remove("hidden");
+}
+// Ajouter un écouteur pour fermer les modale
+const closeModal = function (e) {
+    const modalSectionAdd = document.getElementById("modal-section-add");
+    const modalSectionList = document.getElementById("modal-section-list");
+    const modaloverlay = document.querySelector(".modal-overlay")
+    const closeModal = document.querySelectorAll(".js-modal-close");
 
-        }
+    closeModal.forEach((element) => {
+        element.addEventListener("click", () => {
+            modalSectionList.classList.add("hidden");
+            modalSectionAdd.classList.add("hidden");
+            modaloverlay.classList.add("hidden");
 
-    })
+        });
+    });
 
 }
-const closeModal = function (e) {
-    const modal = document.querySelector(".modal");
-    if (modal === null) return;
-    if (modal) { // Check if modal exists
-        modal.style.display = 'none';  // Hide the modal
-        modal.setAttribute("aria-hidden", true);
-        modal.removeAttribute("aria-modal");
-        modal.removeEventListener("click", closeModal);
-        modal.querySelector(".js-modal-close").removeEventListener("click", closeModal);
 
-    }
+function BackModal() {
+    const modalSectionAdd = document.getElementById("modal-section-add");
+    const modalSectionList = document.getElementById("modal-section-list");
+    modalSectionAdd.classList.add("hidden")
+    modalSectionList.classList.remove("hidden")
+}
+
+//fonction principal qui decloncheles fonctions de la modale
+export function initModal() {
+    const modallist = document.querySelector(".list");
+
+    const modaloverlay = document.querySelector(".modal-overlay")
+    const lienModal = document.querySelector(".js-modal")
+    lienModal.addEventListener("click", () => {
+
+
+        if (modal && modaloverlay) {
+            modal.classList.remove("hidden");
+
+            modaloverlay.classList.remove("hidden");
+            openModal();
+
+        }
+    });
+    displayWorksModal()
+
+    lienModal.addEventListener("click", () => {
+
+        closeModal()
+
+    });
+    //Back to modale list
+    const rowBack = document.querySelector(".js-modal-back");
+    rowBack.addEventListener("click", BackModal);
 
 
 };
 
 
-//fonction principal qui declonche les modals
-export function initModal() {
 
-    document.querySelectorAll(".js-modal").forEach(a => {
-        a.addEventListener("click", openModal);
-
-    });
-    displayWorksModal()
-    document.querySelectorAll(".js-modal-close").forEach(a => {
-        a.addEventListener("click", closeModal);
-
-    })
-
-
-
-}
-
-
-// Ajouter un écouteur pour fermer les modales en appuyant sur la touche "Escape"
-window.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-        closeModal(e);
-    }
-});
-
-async function displayWorksModal(work) {
+async function displayWorksModal() {
     const works = await fetchWorks()
 
     const $galleriemodal = document.querySelector(".gallerie-modal")
 
     $galleriemodal.innerHTML = ""
-    window.works.forEach((work) => {
+    works.forEach((work) => {
         let $el = createModalWorkElement(work)
 
         $galleriemodal.appendChild($el)
@@ -84,11 +94,26 @@ async function displayWorksModal(work) {
     const tras = document.querySelectorAll(".fa-trash-can");
 
     tras.forEach((element) => {
-        element.addEventListener("click", (event) => {
+        element.addEventListener("click", async (event) => {
             const workId = event.target.getAttribute("data-id");
-            deleteWork(workId);
+            let result = await deleteWork(workId);
+            if (result) {
+                window.works = window.works.filter((work) => {
+                    return work.id !== workId
+                })
+                displayWorksModal()
+                displayWorks(window.works)
+            }
+            else {
+                const errorBox = document.createElement("div");
+                errorBox.className = "error-login";
+                errorBox.innerHTML = "il y a une erreur ";
+
+            }
         });
     });
+
+
 }
 
 export function createModalWorkElement(data) {
@@ -111,41 +136,24 @@ export function createModalWorkElement(data) {
 
 }
 
-//Toggling entre deux modales 
 
-const addBtn = document.querySelector(".btn-ajouter")
-addBtn.addEventListener("click", toggleModels)
 
-function toggleModels() {
+export async function displayCategoryModal() {
+    let selectValue = ""
+    let categories = await fetchCategories()
+    const select = document.getElementById("category");
 
-    const modal2 = document.querySelector(".add-modal")
-    modal2.style.visibility = "visible"
-    if (document.querySelector(".modal-wrapper").style.display = 'block') {
-        document.querySelector(".modal-wrapper").style.display = 'none'
-        document.querySelector(".add-modal").style.display = 'block'
-    }
-    else ("je pourais pas ouvrir la modal2")
+    // Clear previous options to avoid duplication
+    select.innerHTML = "";
+
+    // Populate categories
+    categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.id;
+        option.textContent = category.name;
+        select.appendChild(option);
+    });
+
+    // Initialize selectValue with the currently selected category
+    selectValue = select.value;
 }
-// retour à la modal 1
-
-function BackModal() {
-    const modal2 = document.querySelector(".add-modal")
-    modal2.style.visibility = "visible"
-
-    if (document.querySelector(".add-modal").style.display = 'block') {
-        document.querySelector(".add-modal").style.display = 'none'
-        modal2.style.visibility = "hidden"
-        document.querySelector(".modal-wrapper").style.display = 'block'
-
-    } else {
-        console.log("j arrive pas a afficher la modal")
-    }
-
-}
-const rowBack = document.querySelector(".js-modal-back");
-rowBack.addEventListener("click", BackModal);
-//fermer la modale 2
-const closeModale2 = document.querySelector(".js-modal-closer")
-closeModale2.addEventListener("click", closeModal)
-
-

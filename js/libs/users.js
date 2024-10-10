@@ -26,14 +26,12 @@ export function getUsers() {
         const isLoggedIn = localStorage.getItem("isLoggedIn");
 
         if (isLoggedIn === "true") {
-            const editBanner = document.createElement("div");
-            editBanner.classList.add("edit");
-            editBanner.innerHTML = `<p><i class="fa-regular fa-pen-to-square"></i><a href="#modal1" class="js-modal"> Mode édition</a></p>`;
-            document.body.appendChild(editBanner);
-            localStorage.removeItem("isLoggedIn");
+
+            const lien = document.querySelector(".edit")
+            lien.classList.remove("hidden")
+
         }
     }
 
 }
-
 

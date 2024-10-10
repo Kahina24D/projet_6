@@ -12,79 +12,84 @@
     />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
-    <script src="https://kit.fontawesome.com/a5e1b4a712.js" crossorigin="anonymous"></script>
-    
+    <script
+      src="https://kit.fontawesome.com/a5e1b4a712.js"
+      crossorigin="anonymous"
+    ></script>
+
     <script
       type="module"
       src="/main//FrontEnd/js/controllers/index.js"
-     
-      deffer
     ></script>
-   <script type="module" src="../FrontEnd/js/controllers/modals.js"></script>
+    <script type="module" src="../FrontEnd/js/controllers/modals.js"></script>
+  </head>
   <body>
-  
-    <aside id="modal1" class="modal"  role="dialog" aria-labelledby="titlemodale" aria-hidden="true" style="display:none;"  >
-      <div class="modal-container">
-   
-      <div class="modal-wrapper js-modal-stop">
+    <div class="edit hidden">
+      <p>
+        <i class="fa-regular fa-pen-to-square"></i
+        ><a href="#modal" class="js-modal"> Mode édition</a>
+      </p>
+    </div>
 
-        
-          <i class="js-modal-close">&#10006;</i>
-       
-        <div><h1 id="titlemodale">Photo Gallery</h1></div>
-       <div class="gallerie-modal"></div>
-     <div><hr></div> 
-      <button class="btn-ajouter">Ajouter une photo</button>
-      </div>
+    <div class="modal-overlay hidden"></div>
 
-
-      <div class="add-modal" >
-      <div class="modal-closer">
-          <button class="js-modal-back"><i class="fa-solid fa-arrow-left"></i></button>
-          <button class="js-modal-closer"><i class="fa-solid fa-xmark"></i></button>
-         </div>
-      <div class="modal2-content">
-        
-  
-       <div class="ajout-photo" >
-        <h2>Ajout Photo</h2>
-          <form action="#" method="post">
-            <div class="file-section">
-           <div class="ajout-file"> 
-            <i class="fa-solid fa-image"></i>
-            <label for="file"> + Ajouter une photo</label>
-               <input type="file" id="fileInput" accept="image/png" placeholder="hello"></div>
-             
+    <div id="modal" class="hidden modal1">
+      <section class="add hidden" id="modal-section-add">
+        <header class="header">
+          <div class="back-close">
+            <button class="js-modal-back">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <i class="js-modal-close">&#10006;</i>
           </div>
-            <label for="title">Titre</label>
-            <input type="text" name="title" id="title" />
+          <p class="title-modal">Ajout Photo</p>
+        </header>
+        <form id="picture-form" action="#" method="post" accept-charset="utf-8">
+          <div class="file-section">
+            <div class="ajout-file">
+              <div class="picturelaoded"><i class="fa-solid fa-image"></i></div>
+              <div id="image-container"></div>
+              <label id="imageLabel" class="picturelaoded" for="fileInput"
+                >+ Ajouter une photo</label
+              >
+              <input type="file" id="fileInput" />
+            </div>
+
+            <label for="title-input">Titre</label>
+            <input type="text" name="title" id="title-input" />
 
             <label for="category">Categorie</label>
 
-            <select id="category" name="category" size="3">
-              <option value="objet">Objet</option>
-              <option value="appartement">Appartement</option>
-              <option value="hotel">Hotel</option>
-            </select>
-          </form>
-        </div>
-          <hr/>
-      
-      <button class="valider">Valider</button>
+            <select id="category" name="category"></select>
+          </div>
+
+          <footer>
+            <hr />
+            <button class="valider" type="submit">Valider</button>
+          </footer>
+        </form>
+      </section>
+      <section class="list" id="modal-section-list">
+        <header class="header">
+          <i class="js-modal-close">&#10006;</i>
+          <p class="title-modal">Photo Gallery</p>
+        </header>
+        <div class="gallerie-modal"></div>
+        <hr />
+
+        <footer>
+          <button id="add-work">Ajouter une photo</button>
+        </footer>
+      </section>
     </div>
-   </div>
-    </aside>
-   
-  
-  <header>
+
+    <header class="header-principal">
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
-        <ul>
-          <li><a href="#portfolio">projets</li>
-          <li><a href="#contact">contact</li>
-          <li ><a href="logIn.html">login</a></li>
-          <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
-        </ul>
+        <a href="#portfolio">projets</a>
+        <a href="#contact">contact</a>
+        <a href="logIn.html">login</a>
+        <img src="./assets/icons/instagram.png" alt="Instagram" />
       </nav>
     </header>
     <main>
@@ -115,11 +120,8 @@
         <h2>Mes Projets</h2>
         <div class="container">
           <div class="tous">Tous</div>
-          
         </div>
         <div class="gallery"></div>
-
-     
       </section>
       <section id="contact">
         <h2>Contacter</h2>
