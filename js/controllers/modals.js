@@ -1,10 +1,11 @@
 
 import { fetchCategories } from "../libs/categories.js";
-import { getUsers } from "../libs/users.js";
-import { deleteWork, fetchWorks } from "../libs/works.js";
+
+import { createWork, deleteWork, fetchWorks } from "../libs/works.js";
+import { displayWorks } from "./index.works.js";
 
 
-getUsers()
+
 
 function openModal() {
 
@@ -15,9 +16,22 @@ function openModal() {
     addWorkButton.addEventListener("click", () => {
         modalSectionList.classList.add("hidden");
         modalSectionAdd.classList.remove("hidden");
+
+        initModalUpload()
+
     });
     modalSectionList.classList.remove("hidden");
+
 }
+document.getElementById("add-work").addEventListener("click", () => {
+    const btnValider = document.querySelector(".valider");
+    console.log("je suis de retour")
+    btnValider.disabled = true
+    btnValider.classList.add("gris")
+
+
+
+})
 // Ajouter un écouteur pour fermer les modale
 const closeModal = function (e) {
     const modalSectionAdd = document.getElementById("modal-section-add");
@@ -37,14 +51,18 @@ const closeModal = function (e) {
 }
 
 function BackModal() {
+
     const modalSectionAdd = document.getElementById("modal-section-add");
     const modalSectionList = document.getElementById("modal-section-list");
     modalSectionAdd.classList.add("hidden")
     modalSectionList.classList.remove("hidden")
+    initModalUpload()
+
+
 }
 
 //fonction principal qui decloncheles fonctions de la modale
-export function initModal() {
+export async function initModal() {
     const modallist = document.querySelector(".list");
 
     const modaloverlay = document.querySelector(".modal-overlay")
@@ -72,7 +90,165 @@ export function initModal() {
     rowBack.addEventListener("click", BackModal);
 
 
+
+
 };
+export function uploadPictureModale(setImageFile) {
+    const imageContainer = document.getElementById("image-container");
+    const inputFile = document.querySelector('input[type="file"]');
+
+    // Afficher tous les éléments ayant la classe 'picturelaoded'
+    document.querySelectorAll(".picturelaoded").forEach((el) => {
+        el.classList.remove("hidden");
+    });
+
+    // Ajouter un écouteur d'événements pour le changement de fichier
+    if (!inputFile.dataset.listenerAdded) {  // Vérifier si l'écouteur a déjà été ajouté
+        inputFile.addEventListener("change", () => {
+            const file = inputFile.files[0]; // Sélectionner le premier fichier
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Créer un nouvel élément d'image
+                    const image = document.createElement("img");
+                    image.src = e.target.result; // Définir la source de l'image
+                    image.width = 100; // Définir la largeur de l'image (optionnel)
+
+                    // Effacer le conteneur avant d'ajouter la nouvelle image
+                    imageContainer.innerHTML = ""; // Effacer le contenu précédent
+                    imageContainer.appendChild(image); // Ajouter la nouvelle image au conteneur
+
+                    // Masquer les éléments avec la classe 'picturelaoded'
+                    document.querySelectorAll(".picturelaoded").forEach((el) => {
+                        el.classList.add("hidden");
+                    });
+
+                    console.log("Selected Image:", file.name);
+
+                    // Mettre à jour imageFile avec le fichier sélectionné
+                    setImageFile(file);
+                };
+
+                // Lire le fichier comme une URL de données
+                reader.readAsDataURL(file);
+            } else {
+                console.log("No file selected or file is invalid.");
+            }
+        });
+        inputFile.dataset.listenerAdded = "true"; // Marquer que l'écouteur a été ajouté
+    }
+}
+
+async function initModalUpload() {
+    let titleValue = "";
+    let imageFile = null; // Réinitialiser la sélection de l'image
+
+    const titleInput = document.getElementById("title-input");
+    const categorySelect = document.getElementById("category");
+    const pictureForm = document.getElementById("picture-form");
+    const imageContainer = document.getElementById("image-container");
+    const btnValider = document.querySelector(".valider");
+    const inputFile = document.querySelector('input[type="file"]');
+
+    // Réinitialiser les champs à vide à chaque chargement du programme
+    titleInput.value = "";
+    categorySelect.value = "";
+    imageFile = null; // Réinitialiser imageFile à null
+    let title
+    let categorie
+    // Passer une fonction pour mettre à jour imageFile
+
+    uploadPictureModale((file) => {
+        imageFile = file; // Mettre à jour imageFile avec le fichier sélectionné
+    });
+
+    // Assurez-vous que les éléments existent avant d'appeler checkFormCompletion
+    if (!titleInput || !categorySelect || !btnValider) {
+
+        console.error("Les éléments du formulaire ne sont pas initialisés.");
+        return;
+    }
+
+    // Ajouter les écouteurs d'événements pour vérifier la complétion du formulaire
+    titleInput.addEventListener("input", function () {
+        title = titleInput.value
+        checkFormCompletion(title, categorie, imageFile, btnValider);
+
+    });
+
+    categorySelect.addEventListener("change", function () {
+        categorie = categorySelect.value
+        checkFormCompletion(title, categorie, imageFile, btnValider);
+    });
+
+    // Simuler le chargement de l'image et appeler checkFormCompletion à ce moment-là
+    uploadPictureModale((file) => {
+        imageFile = file; // Mettre à jour imageFile lorsque l'utilisateur sélectionne une image
+        checkFormCompletion(title, categorie, imageFile, btnValider);
+    });
+
+    await displayCategoryModal(); // Afficher les catégories dans le modal
+
+    // Mettre à jour titleValue à chaque changement de texte dans l'input title
+    imageContainer.innerHTML = ""; // Effacer le contenu précédent
+    titleInput.addEventListener("input", function () {
+        titleValue = titleInput.value;
+        checkFormCompletion()
+    });
+
+    // Réinitialiser le formulaire et gérer la soumission
+    pictureForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // Afficher les valeurs sélectionnées dans la console
+        console.log("Selected Image:", imageFile);
+        console.log("Title:", titleValue);
+        console.log("Category:", categorySelect.value);
+
+        // Vérifier si une image est sélectionnée
+        if (!imageFile) {
+            console.log("Image missing");
+            return;
+        }
+        // Vérifier si tous les champs sont remplis
+
+        // Appeler la fonction createWork avec les valeurs sélectionnées
+        const result = await createWork(imageFile, titleValue, categorySelect.value);
+        if (result) {
+            window.works.push(result);
+
+            BackModal();
+            displayWorksModal();
+            displayWorks(window.works);
+
+        }
+    });
+
+}
+// Sélection du bouton "Valider"
+
+function checkFormCompletion(title, categorie, imageFile, btnValider) {
+    btnValider = document.querySelector(".valider");
+
+    // Vérifier si tous les champs sont remplis
+    if (title !== "" && categorie !== "" && imageFile !== null) {
+        // Tous les champs sont remplis, bouton devient vert
+        btnValider.classList.remove("gris");
+        btnValider.classList.add("active");
+        btnValider.disabled = false;
+    } else {
+        // Un ou plusieurs champs sont vides, bouton devient gris
+        btnValider.classList.remove("active");
+        btnValider.classList.add("gris");
+        btnValider.disabled = true;
+    }
+}
+// Fonction pour vérifier si tous les champs sont remplis
+
+
+
 
 
 
@@ -96,13 +272,16 @@ async function displayWorksModal() {
     tras.forEach((element) => {
         element.addEventListener("click", async (event) => {
             const workId = event.target.getAttribute("data-id");
-            let result = await deleteWork(workId);
+            let result = deleteWork(workId);
             if (result) {
+
                 window.works = window.works.filter((work) => {
                     return work.id !== workId
                 })
+                window.works.pop(result)
                 displayWorksModal()
                 displayWorks(window.works)
+
             }
             else {
                 const errorBox = document.createElement("div");
@@ -137,7 +316,7 @@ export function createModalWorkElement(data) {
 }
 
 
-
+//upload category for the modal
 export async function displayCategoryModal() {
     let selectValue = ""
     let categories = await fetchCategories()
@@ -157,3 +336,4 @@ export async function displayCategoryModal() {
     // Initialize selectValue with the currently selected category
     selectValue = select.value;
 }
+

@@ -456,16 +456,31 @@ h2 {
   height: 36px;
 
   border-radius: 60px;
-  background-color: #1d6154;
 
   text-align: center;
   border: none;
   color: white;
   font-size: 14px;
 }
+#add-work {
+  background-color: #1d6154;
+}
+/* Style pour le bouton "gris" */
+.gris {
+  background-color: grey;
+  color: white;
+}
 
-.valider {
-  background-color: #a7a7a7;
+/* Style pour le bouton "rouge" */
+.rouge {
+  background-color: red;
+  color: white;
+}
+
+/* Style pour le bouton "vert" */
+.vert {
+  background-color: green;
+  color: white;
 }
 .js-modal-close {
   display: block;

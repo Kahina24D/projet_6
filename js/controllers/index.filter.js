@@ -4,11 +4,6 @@ import { displayWorks } from "./index.works.js";
 
 import { fetchCategories } from "../libs/categories.js";
 
-
-
-
-
-
 export async function displayCategories() {
 
     let activeElement = null
@@ -53,19 +48,8 @@ export async function displayCategories() {
         }
 
         this.classList.add("active")
-
-
-
     })
-
-
-
-
-
 }
-
-
-
 
 export async function initFilter() {
     window.categories = await fetchCategories();

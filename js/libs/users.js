@@ -9,29 +9,22 @@ export async function login(email, password) {
         body: JSON.stringify({ email, password })
     });
 
-    if (response.status !== 200) {
-        throw "invalid email or password";
+    if (!response.ok) {
+        throw new error("invalid email or password");
     }
-
-    const { token } = await response.json();
-    localStorage.setItem("token", token);
-    localStorage.setItem("isLoggedIn", "true"); // Set flag for the edit mode banner
-    window.location.href = "index.html"; // Redirect to the index page after login
-}
-// Check if user is logged in and show edit mode banner
-export function getUsers() {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-    if (isLoggedIn === "true") {
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-        if (isLoggedIn === "true") {
-
-            const lien = document.querySelector(".edit")
-            lien.classList.remove("hidden")
-
-        }
-    }
+    const data = await response.json()
+    return data;
 
 }
+export function logout() {
+
+
+    localStorage.removeItem("isLoggedIn");
+
+    // Redirect to the login page after logout
+    window.location.href = "index.html";
+
+}
+
+
 

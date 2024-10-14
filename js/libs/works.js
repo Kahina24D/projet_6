@@ -1,5 +1,3 @@
-import { uploadPictureModale } from "../controllers/index.works.js";
-import { displayCategoryModal } from "../controllers/modals.js";
 
 
 export async function fetchWorks() {
@@ -41,77 +39,49 @@ export async function deleteWork(workId) {
 }
 
 
+export async function createWork(imageFile, title, category) {
+    // Préparer les données du formulaire
+    const formData = new FormData();
+    formData.append("image", imageFile); // Ajouter l'image sélectionnée
+    formData.append("title", title); // Ajouter le titre
+    formData.append("category", category); // Ajouter la catégorie
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+        console.error("Token is missing or invalid.");
+        return;
+    }
 
+    console.log("Token:", token);  // Vérification du token
+    console.log("FormData content:", formData.get('image'), formData.get('title'), formData.get('category'));  // Vérification des données
 
+    try {
+        const url = "http://localhost:5678/api/works";
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer " + token,  // Utilisation du token JWT
+            },
+            body: formData, // FormData avec l'image, le titre et la catégorie
+        });
 
+        let data = await response.json();
 
-export async function creatWork() {
-    let titleValue = ""
-    const titleInput = document.getElementById("title-input");
-    const categorySelect = document.getElementById("category");
-    const pictureForm = document.getElementById("picture-form");
-
-    const inputFile = document.querySelector('input[type="file"]');
-    let imageFile;
-    await displayCategoryModal();
-    // Call uploadPictureModale and wait for the image file
-    uploadPictureModale(inputFile).then((file) => {
-        imageFile = file; // Get the selected image file
-    }).catch((error) => {
-        console.error("Error while selecting image:", error);
-    });
-
-    titleInput.addEventListener("input", function () {
-        titleValue = titleInput.value; // Update titleValue on input
-    });
-
-    pictureForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        // Log the selected values
-        console.log("Selected Image:", imageFile);
-        console.log("Title:", titleValue);
-        console.log("Category:", categorySelect.value);
-
-        // Validate that an image is selected
-        if (!imageFile) {
-            console.log("Image missing");
-            return;
+        if (!response.ok) {
+            console.error("Upload failed:", data.message);
+            return false;
+        } else {
+            console.log("Image uploaded successfully!");
+            return {
+                id: data.id,
+                title,
+                category,
+                imageUrl: data.imageUrl  // Utiliser l'URL de l'image renvoyée par le serveur
+            };
         }
 
-        // Prepare form data to submit
-        const formData = new FormData();
-        formData.append("image", imageFile); // Append the selected image file
-        formData.append("title", titleValue); // Append the title value
-        formData.append("category", categorySelect.value); // Append the selected category value
-
-        const token = localStorage.getItem("token");
-        if (!token) {
-            console.error("Token missing");
-            return;
-        }
-
-        try {
-            const url = "http://localhost:5678/api/works";
-            let response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-                body: formData, // FormData includes the image, title, and category
-            });
-
-            if (!response.ok) {
-                console.error("Upload failed");
-                return false;
-            } else {
-                console.log("Image uploaded successfully!");
-            }
-
-        } catch (error) {
-            console.error("Error occurred:", error);
-        }
-    });
+    } catch (error) {
+        console.error("Error occurred:", error);
+    }
 }
-creatWork()
+

@@ -17,11 +17,8 @@
       crossorigin="anonymous"
     ></script>
 
-    <script
-      type="module"
-      src="/main//FrontEnd/js/controllers/index.js"
-    ></script>
-    <script type="module" src="../FrontEnd/js/controllers/modals.js"></script>
+    <script type="module" src="js/controllers/index.js"></script>
+    <script type="module" src="js/controllers/modals.js"></script>
   </head>
   <body>
     <div class="edit hidden">
@@ -65,7 +62,7 @@
 
           <footer>
             <hr />
-            <button class="valider" type="submit">Valider</button>
+            <button class="valider gris" type="submit" disabled>Valider</button>
           </footer>
         </form>
       </section>
@@ -88,7 +85,8 @@
       <nav>
         <a href="#portfolio">projets</a>
         <a href="#contact">contact</a>
-        <a href="logIn.html">login</a>
+        <a href="logIn.html" class="logIn">login</a>
+        <a href="logIn.html" class="logout hidden">logout</a>
         <img src="./assets/icons/instagram.png" alt="Instagram" />
       </nav>
     </header>
