@@ -3,7 +3,10 @@
 import { initWorks } from "./index.works.js";
 import { initFilter } from "./index.filter.js";
 import { initModal } from "./modals.js";
-import { initLogin } from "./login.js";
+import { initlogOut } from "../logOut.js";
+
+
+
 
 
 
@@ -17,10 +20,11 @@ async function init() {
   initWorks()
 
   initFilter()
-  initLogin()
+
 
   initModal()
 
+  initlogOut()
 
 }
 

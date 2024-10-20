@@ -255,7 +255,13 @@ form {
   display: flex;
   flex-direction: column;
 }
+.login__form input {
+  display: flex;
+  gap: 1rem;
+  float: right;
 
+  width: 500px;
+}
 input {
   height: 50px;
   font-size: 1.2em;
@@ -272,7 +278,7 @@ label {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"] {
+/* input[type="submit"] {
   font-family: "Syne";
   font-weight: 700;
   color: white;
@@ -281,8 +287,22 @@ input[type="submit"] {
   width: 180px;
   text-align: center;
   border-radius: 60px;
-}
+  float: center;
+} */
+.login__form input[type="submit"] {
+  /* Marges supérieures et inférieures de 20px, marges latérales automatiques */
+  display: flex;
+  align-self: center;
 
+  /* Espace à l'intérieur du bouton */
+  background-color: #1d6154; /* Couleur de fond du bouton */
+  color: white; /* Couleur du texte */
+  border: none; /* Supprime la bordure */
+  border-radius: 60px; /* Arrondi les coins du bouton */
+  cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
+  font-size: 16px; /* Taille de la police */
+  width: 200px;
+}
 footer nav ul {
   display: flex;
   justify-content: flex-end;
@@ -290,11 +310,7 @@ footer nav ul {
 }
 
 /*page de connexion*******************/
-.login-container {
-  padding: 20px;
 
-  width: 300px;
-}
 h2 {
   text-align: center;
 }
@@ -628,4 +644,46 @@ hr {
 .metions-legales {
   float: right;
   padding: 1rem;
+}
+.login {
+  max-width: 500px; /* Ajustez la largeur comme souhaité */
+  margin: 0 auto; /* Centre le bloc horizontalement */
+  padding: 20px; /* Ajoute un peu d'espace à l'intérieur du bloc */
+}
+
+.login h2 {
+  text-align: center; /* Centre le titre */
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column; /* Aligne les éléments verticalement */
+}
+
+.login__form label {
+  margin-top: 10px; /* Espace entre le label et l'input */
+}
+
+.login__form input {
+  padding: 10px; /* Espace à l'intérieur des inputs */
+  margin-top: 5px; /* Espace entre l'input et le label */
+  border: 1px solid #ccc; /* Bordure des inputs */
+  border-radius: 4px; /* Arrondir les coins des inputs */
+}
+
+.alredyLogged__error,
+.loginEmail__error,
+.loginMdp__error {
+  color: red; /* Couleur des messages d'erreur */
+  margin-top: 5px; /* Espace entre l'input et le message d'erreur */
+}
+.forget-password {
+  color: #3d3d3d;
+  text-align: center;
+  text-decoration: none;
+  padding: 1rem;
+}
+.portfolio-wrapper {
+  display: block;
+  margin: auto;
 }

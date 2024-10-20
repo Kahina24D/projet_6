@@ -12,9 +12,6 @@
     />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
-    <link rel="stylesheet" href="index.html" />
-
-    <script type="module" src="js/controllers/login.js"></script>
   </head>
   <body>
     <header>
@@ -27,18 +24,23 @@
         <img src="./assets/icons/instagram.png" alt="Instagram" />
       </nav>
     </header>
-    <section id="contact">
+    <section class="login">
       <h2>Log In</h2>
-
-      <form id="login-form" action="#" method="post">
+      <div class="alredyLogged__error"></div>
+      <form class="login__form">
+        <!-- action="" method="" retiré -->
         <label for="email">E-mail</label>
         <input type="email" name="email" id="email" required />
+        <div class="loginEmail__error"></div>
         <label for="password">Mot de passe</label>
         <input type="password" name="password" id="password" required />
-
-        <input type="submit" value="Se connecter" id="submitButton" />
+        <div class="loginMdp__error"></div>
+        <input type="submit" value="Se connecter" id="submit" />
+        <a class="forget-password" href="#">Mot de passe oublié</a>
       </form>
-      <p><a class="forgatten" href="#">Mot de passe oublié </a></p>
     </section>
+
+    <script type="module" src="js/controllers/login.js"></script>
+    <!-- Conserver uniquement cette inclusion -->
   </body>
 </html>

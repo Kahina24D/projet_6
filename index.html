@@ -21,7 +21,7 @@
     <script type="module" src="js/controllers/modals.js"></script>
   </head>
   <body>
-    <div class="edit hidden">
+    <div class="edit">
       <p>
         <i class="fa-regular fa-pen-to-square"></i
         ><a href="#modal" class="js-modal"> Mode édition</a>
@@ -85,8 +85,8 @@
       <nav>
         <a href="#portfolio">projets</a>
         <a href="#contact">contact</a>
-        <a href="logIn.html" class="logIn">login</a>
-        <a href="logIn.html" class="logout hidden">logout</a>
+        <a href="logIn.html" class="logIn hidden">login</a>
+        <a href="#" class="logout">logout</a>
         <img src="./assets/icons/instagram.png" alt="Instagram" />
       </nav>
     </header>
@@ -116,11 +116,16 @@
       </section>
       <section id="portfolio">
         <h2>Mes Projets</h2>
-        <div class="container">
-          <div class="tous">Tous</div>
+        <div class="portfolio-wrapper">
+          <!-- Ajouter un wrapper pour contenir la container et tous -->
+          <div class="tous"></div>
+          <div class="container"></div>
+
+          <!-- Assurez-vous que 'Tous' est visible -->
         </div>
         <div class="gallery"></div>
       </section>
+
       <section id="contact">
         <h2>Contacter</h2>
         <p>Vous avez un projet ? Discutons-en !</p>

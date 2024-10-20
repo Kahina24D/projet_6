@@ -1,12 +1,12 @@
 
 import { fetchCategories } from "../libs/categories.js";
-
 import { createWork, deleteWork, fetchWorks } from "../libs/works.js";
+import { displayCategories } from "./index.filter.js";
 import { displayWorks } from "./index.works.js";
 
 
 
-
+/*****************************************************fonction open Modal******************************************************* */
 function openModal() {
 
 
@@ -91,8 +91,8 @@ export async function initModal() {
 
 
 
-
 };
+/****************************************************gerer l affichage de la Modal********************************************************** */
 export function uploadPictureModale(setImageFile) {
     const imageContainer = document.getElementById("image-container");
     const inputFile = document.querySelector('input[type="file"]');
@@ -113,10 +113,10 @@ export function uploadPictureModale(setImageFile) {
                 reader.onload = function (e) {
                     // Créer un nouvel élément d'image
                     const image = document.createElement("img");
-                    image.src = e.target.result; // Définir la source de l'image
-                    image.width = 100; // Définir la largeur de l'image (optionnel)
+                    image.src = e.target.result;
+                    image.width = 100;
 
-                    // Effacer le conteneur avant d'ajouter la nouvelle image
+
                     imageContainer.innerHTML = ""; // Effacer le contenu précédent
                     imageContainer.appendChild(image); // Ajouter la nouvelle image au conteneur
 
@@ -140,7 +140,7 @@ export function uploadPictureModale(setImageFile) {
         inputFile.dataset.listenerAdded = "true"; // Marquer que l'écouteur a été ajouté
     }
 }
-
+/**********************************************gerer l afigage de l image  sur la modal********************************************************************** */
 async function initModalUpload() {
     let titleValue = "";
     let imageFile = null; // Réinitialiser la sélection de l'image
@@ -212,18 +212,35 @@ async function initModalUpload() {
             console.log("Image missing");
             return;
         }
-        // Vérifier si tous les champs sont remplis
+
 
         // Appeler la fonction createWork avec les valeurs sélectionnées
-        const result = await createWork(imageFile, titleValue, categorySelect.value);
-        if (result) {
-            window.works.push(result);
+        const response = await createWork(imageFile, titleValue, categorySelect.value);
+        const categories = await fetchCategories();  // On récupère les catégories
 
-            BackModal();
-            displayWorksModal();
+        if (response) {
+            const newWork = response;
+            console.log(newWork)
+
+
+            // Mettez à jour les œuvres et affichez les nouvelles données
+            window.works = window.works.concat(newWork);  // Mettez à jour la liste des œuvres globales
+            displayWorksModal(window.works);
             displayWorks(window.works);
 
+            // Filtrez les œuvres par catégorie correspondante
+            window.works = await fetchWorks()
+            const filteredWorks = window.works.filter((work) => {
+                return work.categoryId === newWork.category;
+
+            });
+
+            // Mettez à jour l'affichage des catégories si nécessaire
+            displayCategories(filteredWorks);
+
+            BackModal();
         }
+
     });
 
 }
@@ -281,6 +298,8 @@ async function displayWorksModal() {
                 window.works.pop(result)
                 displayWorksModal()
                 displayWorks(window.works)
+                displayWorksModal()
+
 
             }
             else {

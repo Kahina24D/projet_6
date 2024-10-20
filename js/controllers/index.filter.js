@@ -7,11 +7,27 @@ import { fetchCategories } from "../libs/categories.js";
 export async function displayCategories() {
 
     let activeElement = null
+
     let $container = document.querySelector(".container");
+    let tous = document.querySelector(".tous")
+    let divtous = document.createElement("div")
 
+    $container.innerHTML = ""
+    divtous.textContent = "tous"
+    $container.appendChild(divtous)
+    divtous.addEventListener("click", function () {
+        let activeElement = document.querySelector(".active")
+        displayWorks(window.works)
+        if (activeElement) {
+            activeElement.classList.remove("active")
+        }
 
+        this.classList.add("active")
+    })
     for (let i = 0; i < categories.length; i++) {
+
         let div = document.createElement("div");
+
         div.innerHTML = categories[i].name;
 
         div.addEventListener("click", function () {
@@ -35,20 +51,9 @@ export async function displayCategories() {
             )
         });
         $container.appendChild(div)
-
     }
 
-    let tous = document.querySelector(".tous")
 
-    tous.addEventListener("click", function () {
-        let activeElement = document.querySelector(".active")
-        displayWorks(window.works)
-        if (activeElement) {
-            activeElement.classList.remove("active")
-        }
-
-        this.classList.add("active")
-    })
 }
 
 export async function initFilter() {
@@ -57,4 +62,5 @@ export async function initFilter() {
 
 
 }
+
 

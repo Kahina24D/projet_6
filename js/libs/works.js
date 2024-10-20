@@ -1,15 +1,10 @@
 
 
 export async function fetchWorks() {
-    const url = "http://localhost:5678/api/works";
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    const works = await response.json();
-    return works; // Return the fetched works
+    const response = await fetch('http://localhost:5678/api/works');
+    const data = await response.json();
+    console.log("Données brutes reçues :", data);
+    return data;
 }
 
 //function to delete work
