@@ -4,7 +4,7 @@ export function initlogOut() {
     const logout = document.querySelector("a.logout");
     const logIn = document.querySelector("a.logIn");
     const lien = document.querySelector(".edit");
-
+    const bloclien = document.querySelector(".bloc-lien")
     if (logout) {
         logout.addEventListener("click", () => {
             console.log("Logout button clicked");
@@ -32,11 +32,14 @@ export function initlogOut() {
         logIn.classList.add("hidden");
         logout.classList.remove("hidden");
         lien.classList.remove("hidden")
+        bloclien.classList.remove("hidden")
+
     } else {
         // Si l'utilisateur n'est pas connecté, afficher "logIn" et cacher "logout"
         logIn.classList.remove("hidden");
         logout.classList.add("hidden");
         lien.classList.add("hidden")
+        bloclien.classList.add("hidden")
     }
 }
 

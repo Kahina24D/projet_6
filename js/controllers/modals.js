@@ -66,7 +66,7 @@ export async function initModal() {
     const modallist = document.querySelector(".list");
 
     const modaloverlay = document.querySelector(".modal-overlay")
-    const lienModal = document.querySelector(".js-modal")
+    const lienModal = document.querySelector(".edit-modale")
     lienModal.addEventListener("click", () => {
 
 

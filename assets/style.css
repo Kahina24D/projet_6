@@ -289,6 +289,7 @@ label {
   border-radius: 60px;
   float: center;
 } */
+.submit,
 .login__form input[type="submit"] {
   /* Marges supérieures et inférieures de 20px, marges latérales automatiques */
   display: flex;
@@ -302,6 +303,9 @@ label {
   cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
   font-size: 16px; /* Taille de la police */
   width: 200px;
+}
+.submit {
+  margin-top: 2rem;
 }
 footer nav ul {
   display: flex;
@@ -686,4 +690,22 @@ hr {
 .portfolio-wrapper {
   display: block;
   margin: auto;
+}
+.projet {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+.edit-modale,
+.fa-regular {
+  text-decoration: none;
+  margin-top: 0.5rem;
+  color: #000000;
+}
+.editregular {
+  color: #fff;
+}
+.bloc-lien {
+  font-size: 16px;
 }
