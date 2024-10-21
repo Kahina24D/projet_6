@@ -165,7 +165,7 @@ async function initModalUpload() {
     });
 
     // Assurez-vous que les éléments existent avant d'appeler checkFormCompletion
-    if (!titleInput || !categorySelect || !btnValider) {
+    if (!titleInput && !categorySelect && !btnValider) {
 
         console.error("Les éléments du formulaire ne sont pas initialisés.");
         return;
@@ -174,19 +174,19 @@ async function initModalUpload() {
     // Ajouter les écouteurs d'événements pour vérifier la complétion du formulaire
     titleInput.addEventListener("input", function () {
         title = titleInput.value
-        checkFormCompletion(title, categorie, imageFile, btnValider);
+        checkFormCompletion(title);
 
     });
 
     categorySelect.addEventListener("change", function () {
         categorie = categorySelect.value
-        checkFormCompletion(title, categorie, imageFile, btnValider);
+        checkFormCompletion(categorie);
     });
 
     // Simuler le chargement de l'image et appeler checkFormCompletion à ce moment-là
     uploadPictureModale((file) => {
         imageFile = file; // Mettre à jour imageFile lorsque l'utilisateur sélectionne une image
-        checkFormCompletion(title, categorie, imageFile, btnValider);
+        checkFormCompletion(imageFile);
     });
 
     await displayCategoryModal(); // Afficher les catégories dans le modal
@@ -246,11 +246,14 @@ async function initModalUpload() {
 }
 // Sélection du bouton "Valider"
 
-function checkFormCompletion(title, categorie, imageFile, btnValider) {
+async function checkFormCompletion(title, categorie, imageFile, btnValider) {
     btnValider = document.querySelector(".valider");
-
+    // categorie = displayCategoryModal()
+    // for (let i = 0; i < categorie[i].length; i++) {
+    //     categorie.value = categorie[i]
+    // }
     // Vérifier si tous les champs sont remplis
-    if (title !== "" && categorie !== "" && imageFile !== null) {
+    if (imageFile !== null && title !== "" && categorie !== "") {
         // Tous les champs sont remplis, bouton devient vert
         btnValider.classList.remove("gris");
         btnValider.classList.add("active");
@@ -291,7 +294,7 @@ async function displayWorksModal() {
             const workId = event.target.getAttribute("data-id");
             let result = deleteWork(workId);
             if (result) {
-
+                window.works = await fetchWorks()
                 window.works = window.works.filter((work) => {
                     return work.id !== workId
                 })

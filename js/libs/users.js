@@ -1,12 +1,11 @@
-const loginEmailError = document.querySelector(".loginEmail__error");
-const loginMdpError = document.querySelector(".loginMdp__error");
-
 export async function login(id) {
-    loginEmailError.innerHTML = "";
-    loginMdpError.innerHTML = "";
 
+
+    const alredyLoggedError = document.querySelector(".alredyLogged__error");
+    const loginEmailError = document.querySelector(".loginEmail__error");
+    const loginMdpError = document.querySelector(".loginMdp__error");
     // Validation de l'email
-    if (!id.email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$/g)) {
+    if (!id.email) {
         const p = document.createElement("p");
         p.innerHTML = "Veuillez entrer une addresse mail valide";
         loginEmailError.appendChild(p);
@@ -14,7 +13,7 @@ export async function login(id) {
     }
 
     // Validation du mot de passe
-    if (id.password.length < 5 || !id.password.match(/^[a-zA-Z0-9]+$/g)) {
+    if (id.password.length < 5) {
         const p = document.createElement("p");
         p.innerHTML = "Veuillez entrer un mot de passe valide";
         loginMdpError.appendChild(p);
@@ -36,27 +35,17 @@ export async function login(id) {
                 p.innerHTML = "La combinaison e-mail/mot de passe est incorrecte";
                 loginMdpError.appendChild(p);
             } else if (result.token) {
-
                 localStorage.setItem("token", result.token);
-                window.location.href = "index.html";
+                // Afficher/masquer les éléments après la connexion
 
+
+
+
+                window.location.href = "index.html"; // Rediriger après connexion
             }
-            console.log("hello monde")
         })
         .catch(error => {
             console.log(error);
         });
 }
-
-// export function logout() {
-
-
-//     localStorage.removeItem("isLoggedIn");
-
-//     // Redirect to the login page after logout
-//     window.location.href = "index.html";
-
-// }
-
-
 
